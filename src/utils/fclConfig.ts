@@ -1,5 +1,5 @@
 import * as fcl from '@onflow/fcl';
-
+import { z } from 'zod';
 export type Network = 'mainnet' | 'testnet';
 
 interface NetworkConfig {
@@ -8,6 +8,8 @@ interface NetworkConfig {
     [key: string]: string;
   };
 }
+
+export const network = z.enum(['mainnet', 'testnet'] as const).default('mainnet').describe('Flow network to use');
 
 const networks: Record<Network, NetworkConfig> = {
   mainnet: {

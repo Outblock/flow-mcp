@@ -1,5 +1,4 @@
-import type { ToolRegistration } from "@/types";
-import { makeJsonSchema } from "@/utils/makeJsonSchema";
+import type { ToolRegistration } from "@/types/types";
 import { type CoaAccountSchema, coaAccountSchema } from "./schema";
 import * as fcl from '@onflow/fcl';
 import * as t from '@onflow/types';
@@ -53,7 +52,7 @@ export const getCoaAccount = async (args: CoaAccountSchema): Promise<any> => {
 export const coaAccountTool: ToolRegistration<CoaAccountSchema> = {
   name: "get_coa_account",
   description: "Get the COA account information for a Flow address",
-  inputSchema: makeJsonSchema(coaAccountSchema),
+  inputSchema: coaAccountSchema,
   handler: async (args: CoaAccountSchema) => {
     try {
       const parsedArgs = coaAccountSchema.parse(args);
@@ -62,7 +61,7 @@ export const coaAccountTool: ToolRegistration<CoaAccountSchema> = {
         content: [
           {
             type: "text",
-            text: JSON.stringify(result, null, 2),
+            text: result,
           },
         ],
       };

@@ -1,5 +1,4 @@
-import type { ToolRegistration } from "@/types";
-import { makeJsonSchema } from "@/utils/makeJsonSchema";
+import type { ToolRegistration } from "@/types/types";
 import { type FlowBalanceSchema, flowBalanceSchema } from "./schema";
 import * as fcl from '@onflow/fcl';
 import { configureFCL } from '@/utils/fclConfig';
@@ -49,7 +48,7 @@ export const getFlowBalance = async (args: FlowBalanceSchema): Promise<any> => {
 export const flowBalanceTool: ToolRegistration<FlowBalanceSchema> = {
   name: "get_flow_balance",
   description: "Get the FLOW balance for a Flow address",
-  inputSchema: makeJsonSchema(flowBalanceSchema),
+  inputSchema: flowBalanceSchema,
   handler: async (args: FlowBalanceSchema) => {
     try {
       const parsedArgs = flowBalanceSchema.parse(args);

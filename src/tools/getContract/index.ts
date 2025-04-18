@@ -1,5 +1,4 @@
-import type { ToolRegistration } from "@/types";
-import { makeJsonSchema } from "@/utils/makeJsonSchema";
+import type { ToolRegistration } from "@/types/types.js";
 import { type GetContractSchema, getContractSchema } from "./schema.js";
 import * as fcl from '@onflow/fcl';
 import { configureFCL } from '@/utils/fclConfig';
@@ -36,9 +35,9 @@ export const getContract = async (args: GetContractSchema): Promise<string> => {
 };
 
 export const getContractTool: ToolRegistration<GetContractSchema> = {
-  name: "mcp_flow_mcp_get_contract",
+  name: "get_contract",
   description: "Get the source code of a contract deployed at a specific address",
-  inputSchema: makeJsonSchema(getContractSchema),
+  inputSchema: getContractSchema,
   handler: async (args: GetContractSchema) => {
     try {
       const parsedArgs = getContractSchema.parse(args);

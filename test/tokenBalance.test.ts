@@ -1,5 +1,5 @@
 import { describe, test, expect } from 'bun:test';
-import { getTokenBalance } from './index';
+import { getTokenBalance } from '../src/tools/tokenBalance/index';
 
 describe('getTokenBalance', () => {
   // Use a known Flow account for testing
@@ -8,8 +8,7 @@ describe('getTokenBalance', () => {
   test('should return token balances for a valid address on mainnet', async () => {
     const result = await getTokenBalance({
       address: testAddress,
-      network: 'mainnet',
-      tokenIdentifier: 'A.1654653399040a61.FlowToken.Vault'
+      network: 'mainnet'
     });
 
     expect(result).toBeDefined();
@@ -22,8 +21,7 @@ describe('getTokenBalance', () => {
   test('should return token balances for a valid address on testnet', async () => {
     const result = await getTokenBalance({
       address: '0x7e60df042a9c0868', // Flow Token account on testnet
-      network: 'testnet',
-      tokenIdentifier: 'A.7e60df042a9c0868.FlowToken.Vault'
+      network: 'testnet'
     });
 
     expect(result).toBeDefined();
@@ -37,15 +35,13 @@ describe('getTokenBalance', () => {
     await expect(getTokenBalance({
       address: testAddress,
       network: 'invalid' as any,
-      tokenIdentifier: 'A.1654653399040a61.FlowToken.Vault'
     })).rejects.toThrow('Unsupported network');
   });
 
   test('should throw error for invalid address', async () => {
     await expect(getTokenBalance({
       address: 'invalid-address',
-      network: 'mainnet',
-      tokenIdentifier: 'A.1654653399040a61.FlowToken.Vault'
+      network: 'mainnet'
     })).rejects.toThrow();
   });
 }); 

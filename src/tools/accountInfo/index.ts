@@ -1,9 +1,8 @@
-import type { ToolRegistration } from "@/types";
-import { makeJsonSchema } from "@/utils/makeJsonSchema";
+import type { ToolRegistration } from "@/types/types.js";
 import { type AccountInfoSchema, type AccountInfoResult, accountInfoSchema } from "./schema.js";
 import * as fcl from '@onflow/fcl';
 import { configureFCL } from '@/utils/fclConfig';
-
+import { z } from 'zod';
 const accountInfoScript = `
 access(all) struct Result {
   access(all) let address: Address
@@ -54,13 +53,10 @@ export const getAccountInfo = async (args: AccountInfoSchema): Promise<AccountIn
   configureFCL(network);
 
   try {
-    // Format address to remove 0x prefix if present
-    const formattedAddress = address.replace("0x", "");
-    
     // Execute the Cadence script
     const response = await fcl.query({
       cadence: accountInfoScript,
-      args: (arg, t) => [arg(formattedAddress, t.Address)],
+      args: (arg, t) => [arg(address, t.Address)],
     });
 
     return {
@@ -77,9 +73,9 @@ export const getAccountInfo = async (args: AccountInfoSchema): Promise<AccountIn
 };
 
 export const accountInfoTool: ToolRegistration<AccountInfoSchema> = {
-  name: "mcp_flow_mcp_get_account_info",
+  name: "get_account_info",
   description: "Get detailed account information including balance and storage stats for a Flow address",
-  inputSchema: makeJsonSchema(accountInfoSchema),
+  inputSchema: accountInfoSchema,
   handler: async (args: AccountInfoSchema) => {
     try {
       const parsedArgs = accountInfoSchema.parse(args);

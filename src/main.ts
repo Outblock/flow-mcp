@@ -1,79 +1,54 @@
 #!/usr/bin/env node
 
 // Version is automatically updated during release process
+import { FastMCP } from "fastmcp";
+import { createTools } from "./tools";
+import { createPrompts } from "./prompts";
 export const VERSION = "0.1.0";
 
-import { Server } from "@modelcontextprotocol/sdk/server/index.js";
-import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
-import {
-	CallToolRequestSchema,
-	ListToolsRequestSchema,
-} from "@modelcontextprotocol/sdk/types.js";
-import { createTools } from "./tools";
-
-
-/* You can remove this section if you don't need to validate command line arguments */
-/* You'll have to handle the error yourself */
-/*
-const expectedArgs = [
-	"expected-arg-1",
-	"expected-arg-2",
-]
-const args = process.argv.slice(2);
-if (args.length < expectedArgs.length) {
-	console.error("CLI arguments not provided. If you are getting this error and don't know why, you probably need to remove CLI argument logic in main.ts");
-	process.exit(1);
-}
-*/
-
 // Initialize server
-const server = new Server(
-	{
-		name: "Flow MCP",
-		version: VERSION,
-	},
-	{
-		capabilities: {
-			tools: {},
-		},
-	},
-);
+const server = new FastMCP({
+	name: "Flow MCP",
+	version: VERSION,
+});
 
 const tools = createTools();
 
-// Register tools
-server.setRequestHandler(ListToolsRequestSchema, async () => ({
-	tools: tools.map(({ handler, ...tool }) => tool),
-}));
-
-// Register tool handlers
-server.setRequestHandler(CallToolRequestSchema, async (request) => {
-	try {
-		const { name, arguments: args } = request.params;
-		const tool = tools.find((t) => t.name === name);
-
-		if (!tool) {
-			throw new Error(`Unknown tool: ${name}`);
+tools.forEach((tool) => {
+	server.addTool({
+		name: tool.name,
+		description: tool.description,
+		parameters: tool.inputSchema,
+		execute: async (params) => {
+			const result = await tool.handler(params);
+			if (typeof result.content[0].text === "string") {
+				return result.content[0].text;
+			  }
+			return JSON.stringify(result.content[0].text);
 		}
-
-		return tool.handler(args);
-	} catch (error) {
-		return {
-			content: [
-				{
-					type: "text",
-					text: `Error: ${error instanceof Error ? error.message : String(error)}`,
-				},
-			],
-			isError: true,
-		};
-	}
+	});
 });
+
+
+const prompts = createPrompts();
+
+prompts.forEach((prompt) => {
+	server.addPrompt({
+		name: prompt.name,
+		description: prompt.description,
+		arguments: prompt.arguments,
+		load: async (args) => {
+			return prompt.handler(args);
+		}
+	});
+});
+
 
 // Start server
 async function runServer() {
-	const transport = new StdioServerTransport();
-	await server.connect(transport);
+	server.start({
+		transportType: "stdio",
+	  });
 	console.error("Flow MCP Server running on stdio");
 }
 
