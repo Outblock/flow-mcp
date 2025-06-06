@@ -56,7 +56,6 @@
   "dependencies": {
     "@onflow/fcl": "^1.15.0",
     "@onflow/types": "^1.4.1",
-    "axios": "^1.9.0",
     "elliptic": "^6.6.1",
     "execa": "^9.5.2",
     "fastmcp": "^1.21.0",

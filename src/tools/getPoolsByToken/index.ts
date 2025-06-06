@@ -1,21 +1,20 @@
 import type { ToolRegistration } from "@/types/tools.js";
 import { type GetPoolsByTokenSchema, getPoolsByTokenSchema } from "./schema.js";
-import axios from 'axios'
 
 export const getPoolsByToken = async (args: GetPoolsByTokenSchema): Promise<any> => {
   try {
     const { address } = args;
-    let url = `https://api.geckoterminal.com/api/v2/networks/flow-evm/tokens/${address}/pools?`
+    const url = `https://api.geckoterminal.com/api/v2/networks/flow-evm/tokens/${address}/pools?`;
 
-    const res = await axios.get(url, {
+    const res = await fetch(url, {
       headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json;version=20230302',
+        "Content-Type": "application/json",
+        Accept: "application/json;version=20230302",
       },
-    })
-    const { data = {} } = res && res.data ? res.data : {}
+    });
+    const { data = {} } = res.ok ? await res.json() : {};
 
-    return data
+    return data;
 
   } catch (error) {
     throw new Error(`Error fetching contract: ${error instanceof Error ? error.message : String(error)}`);

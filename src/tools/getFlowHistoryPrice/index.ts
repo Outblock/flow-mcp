@@ -1,6 +1,5 @@
 import type { ToolRegistration } from "@/types/tools.js";
 import { type GetTrendingPoolsSchema, getTrendingPoolsSchema } from "./schema.js";
-import axios from 'axios'
 
 export const getFlowHistoryPrice = async (): Promise<any> => {
   try {
@@ -18,13 +17,13 @@ export const getFlowHistoryPrice = async (): Promise<any> => {
       instrument: params.instrument
     }).toString();
 
-    const res = await axios.get(url.toString(), {
+    const res = await fetch(url.toString(), {
       headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json;version=20230302',
+        "Content-Type": "application/json",
+        Accept: "application/json;version=20230302",
       },
-    })
-    const { Data = [] } = res && res.data ? res.data : {}
+    });
+    const { Data = [] } = res.ok ? await res.json() : {};
     const prices = Data.map((item: any) => {
       return {
         timestamp: item.TIMESTAMP,
@@ -40,7 +39,7 @@ export const getFlowHistoryPrice = async (): Promise<any> => {
 
 export const getFlowHistoryPriceTool: ToolRegistration<GetTrendingPoolsSchema> = {
   name: "get_flow_history_price",
-  description: `Get flow token history price from binance`,
+  description: "Get flow token history price from binance",
   inputSchema: getTrendingPoolsSchema,
   handler: async () => {
     try {

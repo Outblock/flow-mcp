@@ -1,21 +1,20 @@
 import type { ToolRegistration } from "@/types/tools.js";
 import { type GetTransactionSchema, getTransactionInfoSchema } from "./schema.js";
-import axios from 'axios'
 
 export const getTransaction = async (args: GetTransactionSchema): Promise<any> => {
   const { txid } = args;
   try {
 
-    let url = `https://evm.flowscan.io/api/v2/transactions/${txid}`
+    const url = `https://evm.flowscan.io/api/v2/transactions/${txid}`;
 
-    const res = await axios.get(url, {
+    const res = await fetch(url, {
       headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json;version=20230302',
+        "Content-Type": "application/json",
+        Accept: "application/json;version=20230302",
       },
-    })
+    });
 
-    return res.data
+    return await res.json();
 
   } catch (error) {
     throw new Error(`Error fetching contract: ${error instanceof Error ? error.message : String(error)}`);

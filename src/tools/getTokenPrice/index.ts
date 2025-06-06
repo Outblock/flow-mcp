@@ -1,20 +1,19 @@
 import type { ToolRegistration } from "@/types/tools.js";
 import { type GetTokenPriceSchema, getTokenPriceSchema } from "./schema.js";
-import axios from 'axios'
 
 export const getTokenPrice = async (args: GetTokenPriceSchema): Promise<any> => {
   const { addresses } = args;
   try {
 
-    let url = `https://api.geckoterminal.com/api/v2/simple/networks/flow-evm/token_price/${addresses}`
+    const url = `https://api.geckoterminal.com/api/v2/simple/networks/flow-evm/token_price/${addresses}`;
 
-    const res = await axios.get(url, {
+    const res = await fetch(url, {
       headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json;version=20230302',
+        "Content-Type": "application/json",
+        Accept: "application/json;version=20230302",
       },
-    })
-    const { data = {} } = res && res.data ? res.data : {}
+    });
+    const { data = {} } = res.ok ? await res.json() : {};
     const { attributes = {} } = data
     const { token_prices = {} } = attributes
 
