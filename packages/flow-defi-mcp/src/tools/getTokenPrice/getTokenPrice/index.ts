@@ -1,9 +1,7 @@
 import type { ToolRegistration } from "@/types/tools.js";
 import { type GetTokenPriceSchema, getTokenPriceSchema } from "./schema.js";
 
-export const getTokenPrice = async (
-  args: GetTokenPriceSchema
-): Promise<any> => {
+export const getTokenPrice = async (args: GetTokenPriceSchema): Promise<any> => {
   const { addresses } = args;
   try {
     const url = `https://api.geckoterminal.com/api/v2/simple/networks/flow-evm/token_price/${addresses}`;
@@ -26,15 +24,9 @@ export const getTokenPrice = async (
     return token_prices;
   } catch (error) {
     if (error instanceof TypeError && error.message.includes("fetch")) {
-      throw new Error(
-        `Network error: Unable to connect to GeckoTerminal API. Please check your internet connection.`
-      );
+      throw new Error(`Network error: Unable to connect to GeckoTerminal API. Please check your internet connection.`);
     }
-    throw new Error(
-      `Error fetching token price: ${
-        error instanceof Error ? error.message : String(error)
-      }`
-    );
+    throw new Error(`Error fetching token price: ${error instanceof Error ? error.message : String(error)}`);
   }
 };
 

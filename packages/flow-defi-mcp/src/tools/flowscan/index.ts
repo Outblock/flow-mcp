@@ -4,7 +4,6 @@ import { type GetTransactionSchema, getTransactionInfoSchema } from "./schema.js
 export const getTransaction = async (args: GetTransactionSchema): Promise<any> => {
   const { txid } = args;
   try {
-
     const url = `https://evm.flowscan.io/api/v2/transactions/${txid}`;
 
     const res = await fetch(url, {
@@ -15,7 +14,6 @@ export const getTransaction = async (args: GetTransactionSchema): Promise<any> =
     });
 
     return await res.json();
-
   } catch (error) {
     throw new Error(`Error fetching contract: ${error instanceof Error ? error.message : String(error)}`);
   }
@@ -55,4 +53,3 @@ export const getEVMTransactionTool: ToolRegistration<GetTransactionSchema> = {
     }
   },
 };
-

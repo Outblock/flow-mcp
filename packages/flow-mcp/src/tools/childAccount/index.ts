@@ -1,9 +1,5 @@
 import type { ToolRegistration } from "@/types/tools.js";
-import {
-  type ChildAccountSchema,
-  type ChildAccountResult,
-  childAccountSchema,
-} from "./schema.js";
+import { type ChildAccountSchema, type ChildAccountResult, childAccountSchema } from "./schema.js";
 import { buildBlockchainContext } from "@/utils/context";
 
 import cdcChildAccountScript from "@/cadence/scripts/standard/get-child-account.cdc?raw";
@@ -13,9 +9,7 @@ import cdcChildAccountScript from "@/cadence/scripts/standard/get-child-account.
  * @param args - The arguments for the function
  * @returns Object mapping child addresses to their account information
  */
-export const getChildAccount = async (
-  args: ChildAccountSchema
-): Promise<ChildAccountResult> => {
+export const getChildAccount = async (args: ChildAccountSchema): Promise<ChildAccountResult> => {
   const { address, network = "mainnet" } = args;
 
   // Build the blockchain context
@@ -26,16 +20,12 @@ export const getChildAccount = async (
     const response = await ctx.connector.executeScript<ChildAccountResult>(
       cdcChildAccountScript,
       (arg, t) => [arg(address, t.Address)],
-      {}
+      {},
     );
 
     return response;
   } catch (error) {
-    throw new Error(
-      `Error fetching child accounts: ${
-        error instanceof Error ? error.message : String(error)
-      }`
-    );
+    throw new Error(`Error fetching child accounts: ${error instanceof Error ? error.message : String(error)}`);
   }
 };
 

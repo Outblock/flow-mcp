@@ -1,5 +1,5 @@
-import { z } from 'zod';
+import { z } from "zod";
 
 export const getTrendingPoolsSchema = z.object({});
 
-export type GetTrendingPoolsSchema = z.infer<typeof getTrendingPoolsSchema>; 
+export type GetTrendingPoolsSchema = z.infer<typeof getTrendingPoolsSchema>;

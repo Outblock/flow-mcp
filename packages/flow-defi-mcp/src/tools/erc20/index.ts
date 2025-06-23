@@ -1,10 +1,4 @@
-import {
-  type Address,
-  isAddress,
-  encodeFunctionData,
-  erc20Abi,
-  parseUnits,
-} from "viem";
+import { type Address, isAddress, encodeFunctionData, erc20Abi, parseUnits } from "viem";
 import type { ToolRegistration } from "@/types/tools.js";
 import { bigint, z } from "zod";
 import { createTextResponse } from "@/types/tools.js";
@@ -33,9 +27,7 @@ function formatTokenBalance(balance: bigint, decimals: number): string {
     return fractionalPart ? `${integerPart}.${fractionalPart}` : integerPart;
   } else {
     const integerPart = balanceStr.slice(0, balanceStr.length - decimals);
-    const fractionalPart = balanceStr
-      .slice(balanceStr.length - decimals)
-      .replace(/0+$/, "");
+    const fractionalPart = balanceStr.slice(balanceStr.length - decimals).replace(/0+$/, "");
 
     return fractionalPart ? `${integerPart}.${fractionalPart}` : integerPart;
   }
@@ -58,9 +50,7 @@ export const getErc20TokensTool = {
 
       // Validate address format
       if (!isAddress(address)) {
-        return createTextResponse(
-          `Invalid address format: ${address}. Must be a valid 0x format address.`
-        );
+        return createTextResponse(`Invalid address format: ${address}. Must be a valid 0x format address.`);
       }
 
       const publicClient = getPublicClient();
@@ -85,10 +75,7 @@ export const getErc20TokensTool = {
             })) as bigint;
 
             // Format balance according to decimals
-            const formattedBalance = formatTokenBalance(
-              balance,
-              tokenInfo.decimals
-            );
+            const formattedBalance = formatTokenBalance(balance, tokenInfo.decimals);
 
             return {
               ...tokenInfo,
@@ -106,15 +93,13 @@ export const getErc20TokensTool = {
               error: error instanceof Error ? error.message : String(error),
             };
           }
-        })
+        }),
       );
 
       return createTextResponse(JSON.stringify(tokenResults, null, 2));
     } catch (error) {
       return createTextResponse(
-        `Error fetching ERC20 tokens: ${
-          error instanceof Error ? error.message : String(error)
-        }`
+        `Error fetching ERC20 tokens: ${error instanceof Error ? error.message : String(error)}`,
       );
     }
   },
@@ -122,8 +107,7 @@ export const getErc20TokensTool = {
 
 export const transferErc20TokenTool = {
   name: "transfer_erc20_token",
-  description:
-    "Transfer an erc20 token to an address. You can query the address book to get the recipient address.",
+  description: "Transfer an erc20 token to an address. You can query the address book to get the recipient address.",
   inputSchema: z.object({
     token: z
       .string()
@@ -132,17 +116,13 @@ export const transferErc20TokenTool = {
           // Check if the input matches any token's name, symbol, or contract address
           return Object.entries(ERC20_TOKENS).some(
             ([key, token]) =>
-              key === input ||
-              token.symbol === input ||
-              token.name === input ||
-              token.contractAddress === input
+              key === input || token.symbol === input || token.name === input || token.contractAddress === input,
           );
         },
         {
-          message:
-            "Invalid token. Please provide a valid token name, symbol, or contract address",
+          message: "Invalid token. Please provide a valid token name, symbol, or contract address",
           path: ["token"],
-        }
+        },
       )
       .describe("The token to send (name, symbol, or contract address)"),
     to: z
@@ -162,20 +142,13 @@ export const transferErc20TokenTool = {
       // Validate address format
       const addressRegex = /^0x[a-fA-F0-9]{40}$/;
       if (!addressRegex.test(to)) {
-        return createTextResponse(
-          `Invalid recipient address format: ${to}. Must be a valid 0x format address.`
-        );
+        return createTextResponse(`Invalid recipient address format: ${to}. Must be a valid 0x format address.`);
       }
 
       // Find token info by checking name, symbol, or contract address
       let tokenInfo;
       for (const [key, info] of Object.entries(ERC20_TOKENS)) {
-        if (
-          key === token ||
-          info.symbol === token ||
-          info.name === token ||
-          info.contractAddress === token
-        ) {
+        if (key === token || info.symbol === token || info.name === token || info.contractAddress === token) {
           tokenInfo = info;
           break;
         }
@@ -183,7 +156,7 @@ export const transferErc20TokenTool = {
 
       if (!tokenInfo) {
         return createTextResponse(
-          `Invalid token: ${token}. Supported tokens: WFLOW, TRUMP, HotCocoa, Gwendolion, Pawderick, Catseye, USDF`
+          `Invalid token: ${token}. Supported tokens: WFLOW, TRUMP, HotCocoa, Gwendolion, Pawderick, Catseye, USDF`,
         );
       }
 
@@ -203,11 +176,7 @@ export const transferErc20TokenTool = {
       };
       return createTextResponse(JSON.stringify(response));
     } catch (error) {
-      return createTextResponse(
-        `Error sending erc20 token: ${
-          error instanceof Error ? error.message : String(error)
-        }`
-      );
+      return createTextResponse(`Error sending erc20 token: ${error instanceof Error ? error.message : String(error)}`);
     }
   },
 };

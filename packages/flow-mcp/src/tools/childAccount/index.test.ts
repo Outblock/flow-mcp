@@ -50,4 +50,4 @@ describe("childAccount", () => {
     // Verify schema matches the childAccountSchema
     expect(childAccountTool.inputSchema).toBe(childAccountSchema);
   });
-}); 
+});

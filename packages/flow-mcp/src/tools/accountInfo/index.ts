@@ -1,9 +1,5 @@
 import type { ToolRegistration } from "@/types/tools.js";
-import {
-  type AccountInfoResult,
-  type AccountInfoSchema,
-  accountInfoSchema,
-} from "./schema.js";
+import { type AccountInfoResult, type AccountInfoSchema, accountInfoSchema } from "./schema.js";
 import { buildBlockchainContext } from "@/utils/context";
 
 import cdcAccountInfoScript from "@/cadence/scripts/standard/get-account-info.cdc?raw";
@@ -13,9 +9,7 @@ import cdcAccountInfoScript from "@/cadence/scripts/standard/get-account-info.cd
  * @param args - The arguments for the function
  * @returns Account information including balances and storage stats
  */
-export const getAccountInfo = async (
-  args: AccountInfoSchema
-): Promise<AccountInfoResult> => {
+export const getAccountInfo = async (args: AccountInfoSchema): Promise<AccountInfoResult> => {
   const { address, network = "mainnet" } = args;
 
   // Build the blockchain context
@@ -23,9 +17,11 @@ export const getAccountInfo = async (
 
   try {
     // Execute the Cadence script
-    const response = await ctx.connector.executeScript<
-      AccountInfoResult | undefined
-    >(cdcAccountInfoScript, (arg, t) => [arg(address, t.Address)], undefined);
+    const response = await ctx.connector.executeScript<AccountInfoResult | undefined>(
+      cdcAccountInfoScript,
+      (arg, t) => [arg(address, t.Address)],
+      undefined,
+    );
 
     if (!response) {
       throw new Error("Not found");
@@ -40,11 +36,7 @@ export const getAccountInfo = async (
       storageFlow: response.storageFlow,
     };
   } catch (error) {
-    throw new Error(
-      `Error fetching account info: ${
-        error instanceof Error ? error.message : String(error)
-      }`
-    );
+    throw new Error(`Error fetching account info: ${error instanceof Error ? error.message : String(error)}`);
   }
 };
 

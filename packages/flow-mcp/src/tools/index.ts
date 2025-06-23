@@ -8,14 +8,7 @@ import type { ToolRegistration } from "../types/tools.js";
 
 // biome-ignore lint/suspicious/noExplicitAny: Any is fine here because all tools validate their input schemas.
 export const createTools = (): ToolRegistration<any>[] => {
-  return [
-    flowBalanceTool,
-    tokenBalanceTool,
-    coaAccountTool,
-    getContractTool,
-    accountInfoTool,
-    childAccountTool,
-  ];
+  return [flowBalanceTool, tokenBalanceTool, coaAccountTool, getContractTool, accountInfoTool, childAccountTool];
 };
 
 export default createTools;

@@ -1,8 +1,5 @@
 import type { ToolRegistration } from "@/types/tools.js";
-import {
-  type GetTrendingPoolsSchema,
-  getTrendingPoolsSchema,
-} from "./schema.js";
+import { type GetTrendingPoolsSchema, getTrendingPoolsSchema } from "./schema.js";
 
 export const getFlowHistoryPrice = async (): Promise<any> => {
   try {
@@ -48,45 +45,38 @@ export const getFlowHistoryPrice = async (): Promise<any> => {
     return prices;
   } catch (error) {
     if (error instanceof TypeError && error.message.includes("fetch")) {
-      throw new Error(
-        `Network error: Unable to connect to CoinDesk API. Please check your internet connection.`
-      );
+      throw new Error(`Network error: Unable to connect to CoinDesk API. Please check your internet connection.`);
     }
-    throw new Error(
-      `Error fetching flow history price: ${
-        error instanceof Error ? error.message : String(error)
-      }`
-    );
+    throw new Error(`Error fetching flow history price: ${error instanceof Error ? error.message : String(error)}`);
   }
 };
 
-export const getFlowHistoryPriceTool: ToolRegistration<GetTrendingPoolsSchema> =
-  {
-    name: "get_flow_history_price",
-    description: "Get flow token history price from binance",
-    inputSchema: getTrendingPoolsSchema,
-    handler: async () => {
-      try {
-        const result = await getFlowHistoryPrice();
-        return {
-          content: [
-            {
-              type: "text",
-              text: result,
-            },
-          ],
-        };
-      } catch (error) {
-        console.error("Error in getFlowHistoryPriceTool handler:", error);
-        return {
-          content: [
-            {
-              type: "text",
-              text: `Error: ${(error as Error).message}`,
-            },
-          ],
-          isError: true,
-        };
-      }
-    },
-  };
+export const getFlowHistoryPriceTool: ToolRegistration<GetTrendingPoolsSchema> = {
+  name: "get_flow_history_price",
+  description: "Get flow token history price from binance",
+  inputSchema: getTrendingPoolsSchema,
+  handler: async () => {
+    try {
+      const result = await getFlowHistoryPrice();
+      return {
+        content: [
+          {
+            type: "text",
+            text: result,
+          },
+        ],
+      };
+    } catch (error) {
+      console.error("Error in getFlowHistoryPriceTool handler:", error);
+      return {
+        content: [
+          {
+            type: "text",
+            text: `Error: ${(error as Error).message}`,
+          },
+        ],
+        isError: true,
+      };
+    }
+  },
+};

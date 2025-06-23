@@ -22,15 +22,9 @@ export const getTokenInfo = async (args: GetTokenInfoSchema): Promise<any> => {
     return data;
   } catch (error) {
     if (error instanceof TypeError && error.message.includes("fetch")) {
-      throw new Error(
-        `Network error: Unable to connect to GeckoTerminal API. Please check your internet connection.`
-      );
+      throw new Error(`Network error: Unable to connect to GeckoTerminal API. Please check your internet connection.`);
     }
-    throw new Error(
-      `Error fetching token info: ${
-        error instanceof Error ? error.message : String(error)
-      }`
-    );
+    throw new Error(`Error fetching token info: ${error instanceof Error ? error.message : String(error)}`);
   }
 };
 

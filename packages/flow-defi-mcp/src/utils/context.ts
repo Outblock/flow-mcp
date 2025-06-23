@@ -4,9 +4,7 @@ import type { FlowBlockchainContext } from "./types";
 
 import flowJSON from "../../flow.json" assert { type: "json" };
 
-export async function buildBlockchainContext(
-	network: Network = networkName,
-): Promise<FlowBlockchainContext> {
+export async function buildBlockchainContext(network: Network = networkName): Promise<FlowBlockchainContext> {
   if (!networks.includes(network)) {
     throw new Error(`Unsupported network: ${network}`);
   }

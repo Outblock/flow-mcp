@@ -2,7 +2,15 @@ import { z } from "zod";
 import { networks } from "@/utils/config";
 
 export const accountInfoSchema = z.object({
-  address: z.string().min(1, "Address is required").describe("Flow address to check account information for"),
+  address: z
+    .string()
+    .min(1, "Address is required")
+    .refine((val) => /^(0x)?[0-9a-fA-F]{16}$/.test(val), {
+      message: "Invalid Flow address format. Must be 16 hexadecimal characters, optionally prefixed with '0x'",
+    })
+    .describe(
+      "Flow address to check account information for, the flow address is 16 characters long or 18 characters long with 0x prefix",
+    ),
   network: z.enum(networks).default("mainnet").describe("Flow network to use"),
 });
 

@@ -7,7 +7,7 @@ describe("query", () => {
   describe("schema validation", () => {
     test("should accept valid input", () => {
       const validInput = {
-        script: "access(all) fun main(name: String): String { return \"Hello, \(name)!\" }",
+        script: 'access(all) fun main(name: String): String { return "Hello, (name)!" }',
         args: ["test"],
         network: "mainnet" as const,
       } satisfies QuerySchema;
@@ -18,7 +18,7 @@ describe("query", () => {
 
     test("should accept input without args", () => {
       const validInput = {
-        script: "pub fun main(): String { return \"Hello, Flow!\" }",
+        script: 'pub fun main(): String { return "Hello, Flow!" }',
         network: "mainnet" as const,
       } satisfies QuerySchema;
 
@@ -43,7 +43,7 @@ describe("query", () => {
 
     test("should use mainnet as default network", () => {
       const input = {
-        script: "access(all) fun main(name: String): String { return \"Hello, \(name)!\" }",
+        script: 'access(all) fun main(name: String): String { return "Hello, (name)!" }',
       };
       const result = querySchema.safeParse(input);
       expect(result.success).toBe(true);
@@ -54,7 +54,7 @@ describe("query", () => {
 
     test("should validate network value", () => {
       const invalidNetwork = {
-        script: "pub fun main(): String { return \"Hello, Flow!\" }",
+        script: 'pub fun main(): String { return "Hello, Flow!" }',
         network: "invalid_network" as any,
       };
       const result = querySchema.safeParse(invalidNetwork);
@@ -85,4 +85,4 @@ describe("query", () => {
     // Verify schema matches the querySchema
     expect(queryTool.inputSchema).toBe(querySchema);
   });
-}); 
+});

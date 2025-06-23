@@ -16,16 +16,17 @@ export const executeQuery = async (args: QuerySchema) => {
   // Execute the Cadence script
   const result = await ctx.connector.executeScript<any>(
     script,
-    (arg, t) => scriptArgs.map((value, index) => {
-      // Handle different argument types
-      if (typeof value === "string" && value.startsWith("0x")) {
-        return arg(value, t.Address);
-      }
-      if (typeof value === "number") {
-        return arg(value.toString(), t.UFix64);
-      }
-      return arg(value, t.String);
-    }),
+    (arg, t) =>
+      scriptArgs.map((value, index) => {
+        // Handle different argument types
+        if (typeof value === "string" && value.startsWith("0x")) {
+          return arg(value, t.Address);
+        }
+        if (typeof value === "number") {
+          return arg(value.toString(), t.UFix64);
+        }
+        return arg(value, t.String);
+      }),
     undefined,
   );
 
@@ -65,4 +66,4 @@ export const queryTool: ToolRegistration<QuerySchema> = {
       };
     }
   },
-}; 
+};

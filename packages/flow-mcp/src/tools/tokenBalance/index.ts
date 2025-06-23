@@ -15,9 +15,11 @@ export const getTokenBalances = async (args: TokenBalanceSchema) => {
   // Build the blockchain context
   const ctx = await buildBlockchainContext(network);
 
-  const result = await ctx.connector.executeScript<
-    Record<string, string> | undefined
-  >(cdcGetFtBalancesScript, (arg, t) => [arg(address, t.Address)], undefined);
+  const result = await ctx.connector.executeScript<Record<string, string> | undefined>(
+    cdcGetFtBalancesScript,
+    (arg, t) => [arg(address, t.Address)],
+    undefined,
+  );
 
   if (!result) {
     throw new Error("Failed to get token balances");

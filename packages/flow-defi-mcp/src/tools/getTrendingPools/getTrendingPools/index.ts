@@ -1,13 +1,9 @@
 import type { ToolRegistration } from "@/types/tools.js";
-import {
-  type GetTrendingPoolsSchema,
-  getTrendingPoolsSchema,
-} from "./schema.js";
+import { type GetTrendingPoolsSchema, getTrendingPoolsSchema } from "./schema.js";
 
 export const getTrendingPools = async (): Promise<any> => {
   try {
-    const url =
-      "https://api.geckoterminal.com/api/v2/networks/flow-evm/trending_pools";
+    const url = "https://api.geckoterminal.com/api/v2/networks/flow-evm/trending_pools";
 
     const res = await fetch(url, {
       headers: {
@@ -25,15 +21,9 @@ export const getTrendingPools = async (): Promise<any> => {
     return data;
   } catch (error) {
     if (error instanceof TypeError && error.message.includes("fetch")) {
-      throw new Error(
-        `Network error: Unable to connect to GeckoTerminal API. Please check your internet connection.`
-      );
+      throw new Error(`Network error: Unable to connect to GeckoTerminal API. Please check your internet connection.`);
     }
-    throw new Error(
-      `Error fetching trending pools: ${
-        error instanceof Error ? error.message : String(error)
-      }`
-    );
+    throw new Error(`Error fetching trending pools: ${error instanceof Error ? error.message : String(error)}`);
   }
 };
 

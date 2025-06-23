@@ -1,9 +1,7 @@
 import type { ToolRegistration } from "@/types/tools.js";
 import { type GetPoolsByTokenSchema, getPoolsByTokenSchema } from "./schema.js";
 
-export const getPoolsByToken = async (
-  args: GetPoolsByTokenSchema
-): Promise<any> => {
+export const getPoolsByToken = async (args: GetPoolsByTokenSchema): Promise<any> => {
   try {
     const { address } = args;
     const url = `https://api.geckoterminal.com/api/v2/networks/flow-evm/tokens/${address}/pools?`;
@@ -24,15 +22,9 @@ export const getPoolsByToken = async (
     return data;
   } catch (error) {
     if (error instanceof TypeError && error.message.includes("fetch")) {
-      throw new Error(
-        `Network error: Unable to connect to GeckoTerminal API. Please check your internet connection.`
-      );
+      throw new Error(`Network error: Unable to connect to GeckoTerminal API. Please check your internet connection.`);
     }
-    throw new Error(
-      `Error fetching pools by token: ${
-        error instanceof Error ? error.message : String(error)
-      }`
-    );
+    throw new Error(`Error fetching pools by token: ${error instanceof Error ? error.message : String(error)}`);
   }
 };
 

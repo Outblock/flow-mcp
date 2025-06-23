@@ -7,4 +7,4 @@ export const querySchema = z.object({
   network: z.enum(networks).default("mainnet").describe("Flow network to use"),
 });
 
-export type QuerySchema = z.infer<typeof querySchema>; 
+export type QuerySchema = z.infer<typeof querySchema>;

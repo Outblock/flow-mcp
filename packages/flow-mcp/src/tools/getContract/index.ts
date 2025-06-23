@@ -8,7 +8,7 @@ import { buildBlockchainContext } from "@/utils/context.js";
  * @returns The contract source code
  */
 export const getContract = async (args: GetContractSchema): Promise<string> => {
-  const { address, contractName, network = 'mainnet' } = args;
+  const { address, contractName, network = "mainnet" } = args;
 
   const ctx = await buildBlockchainContext(network);
   await ctx.connector.onModuleInit();
@@ -17,13 +17,13 @@ export const getContract = async (args: GetContractSchema): Promise<string> => {
   try {
     // Format address to remove 0x prefix if present
     const formattedAddress = address.replace("0x", "");
-    
+
     // Get account information which includes contracts
     const account = await fcl.send([fcl.getAccount(formattedAddress)]).then(fcl.decode);
-    
+
     // Find the specified contract
     const contract = account.contracts[contractName];
-    
+
     if (!contract) {
       throw new Error(`Contract '${contractName}' not found at address ${address}`);
     }
@@ -63,4 +63,4 @@ export const getContractTool: ToolRegistration<GetContractSchema> = {
       };
     }
   },
-}; 
+};
