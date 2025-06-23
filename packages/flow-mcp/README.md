@@ -6,7 +6,7 @@ This package provides a set of core tools for interacting with the native Flow b
 
 - Get native FLOW balance for any address
 - Get fungible token balances for any Flow address
-- Get Custodial Child Account (COA) information
+- Get Cadence Owned Account (COA) information
 - Get contract source code
 - Get detailed account information, including storage stats
 - List child accounts for a parent address
