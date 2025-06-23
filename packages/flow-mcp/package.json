@@ -1,6 +1,6 @@
 {
   "name": "@outblock/flow-mcp",
-  "version": "0.1.11",
+  "version": "0.1.12",
   "description": "Flow blockchain tools for Model Context Protocol (MCP)",
   "author": {
     "name": "Outblock",
@@ -19,12 +19,21 @@
   "bin": {
     "flow-mcp": "dist/bin/flow-mcp.js"
   },
-  "files": ["dist", "package.json"],
+  "files": [
+    "dist",
+    "package.json"
+  ],
   "engines": {
     "node": ">=20.0.0",
     "bun": ">=1.2.0"
   },
-  "keywords": ["flow", "blockchain", "mcp", "model-context-protocol", "cli"],
+  "keywords": [
+    "flow",
+    "blockchain",
+    "mcp",
+    "model-context-protocol",
+    "cli"
+  ],
   "scripts": {
     "build": "tsup",
     "test": "bun test",
