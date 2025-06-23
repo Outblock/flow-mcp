@@ -1,0 +1,62 @@
+{
+  "name": "@outblock/flow-defi-mcp",
+  "version": "0.1.11",
+  "description": "Flow blockchain tools for Model Context Protocol (MCP)",
+  "author": {
+    "name": "Outblock",
+    "url": "https://outblock.io",
+    "github": "https://github.com/outblock"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/outblock/flow-mcp.git"
+  },
+  "type": "module",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "bin": {
+    "flow-mcp": "dist/bin/flow-mcp.js"
+  },
+  "files": ["dist", "package.json"],
+  "engines": {
+    "node": ">=20.0.0",
+    "bun": ">=1.2.0"
+  },
+  "keywords": ["flow", "blockchain", "mcp", "model-context-protocol", "cli"],
+  "scripts": {
+    "build": "tsup",
+    "test": "bun test",
+    "format": "biome format . --write",
+    "start": "node dist/index.js",
+    "start:sse": "node dist/index.js --sse",
+    "dev": "bun src/bin/flow-mcp.ts dev src/index.ts",
+    "inspect": "bun src/bin/flow-mcp.ts inspect src/index.ts"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^1.9.4",
+    "@types/bun": "latest",
+    "@types/elliptic": "^6.4.18",
+    "@types/node": "^22.13.5",
+    "@types/yargs": "^17.0.33",
+    "bun-types": "^1.2.10",
+    "tsup": "^8.4.0",
+    "typescript": "^5.7.3"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.13.1",
+    "@onflow/fcl": "^1.15.0",
+    "@onflow/types": "^1.4.1",
+    "elliptic": "^6.6.1",
+    "execa": "^9.5.2",
+    "fastmcp": "^1.21.0",
+    "sha3": "^2.1.4",
+    "viem": "^2.29.2",
+    "yargs": "^17.7.2",
+    "zod": "^3.24.1"
+  },
+  "optionalDependencies": {
+    "@rollup/rollup-linux-x64-gnu": "4.40.0"
+  }
+}
