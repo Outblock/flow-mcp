@@ -25,7 +25,9 @@ describe("accountInfo", () => {
       if (!result.success) {
         const errors = result.error.errors;
         expect(errors).toHaveLength(1);
-        expect(errors[0].message).toBe("Address is required");
+        expect(errors[0].message).toBe(
+          "Invalid Flow address format. Must be 16 hexadecimal characters, optionally prefixed with '0x'"
+        );
       }
     });
 
