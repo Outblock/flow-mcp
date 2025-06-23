@@ -11,9 +11,6 @@
     "outDir": "dist",
     "declaration": true,
     "sourceMap": true,
-    "paths": {
-      "@/*": ["./src/*"]
-    }
   },
   "include": ["src/**/*.ts"],
   "exclude": ["node_modules", "dist"]

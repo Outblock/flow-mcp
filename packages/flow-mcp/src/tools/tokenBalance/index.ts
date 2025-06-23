@@ -2,7 +2,7 @@ import type { ToolRegistration } from "@/types/tools";
 import { type TokenBalanceSchema, tokenBalanceSchema } from "./schema";
 import { buildBlockchainContext } from "@/utils/context";
 
-import cdcGetFtBalancesScript from "@cadence/scripts/standard/get-ft-balances.cdc?raw";
+import cdcGetFtBalancesScript from "@/cadence/scripts/standard/get-ft-balances.cdc?raw";
 
 /**
  * Get the balance of a specific token for a Flow address
@@ -15,11 +15,9 @@ export const getTokenBalances = async (args: TokenBalanceSchema) => {
   // Build the blockchain context
   const ctx = await buildBlockchainContext(network);
 
-  const result = await ctx.connector.executeScript<Record<string, string> | undefined>(
-    cdcGetFtBalancesScript,
-    (arg, t) => [arg(address, t.Address)],
-    undefined,
-  );
+  const result = await ctx.connector.executeScript<
+    Record<string, string> | undefined
+  >(cdcGetFtBalancesScript, (arg, t) => [arg(address, t.Address)], undefined);
 
   if (!result) {
     throw new Error("Failed to get token balances");
@@ -64,4 +62,4 @@ export const tokenBalanceTool: ToolRegistration<TokenBalanceSchema> = {
       };
     }
   },
-}; 
+};

@@ -2,7 +2,7 @@ import type { ToolRegistration } from "@/types/tools";
 import { type FlowBalanceSchema, flowBalanceSchema } from "./schema";
 import { buildBlockchainContext } from "@/utils/context";
 
-import cdcGetBalanceScript from "@cadence/scripts/standard/get-balance.cdc?raw";
+import cdcGetBalanceScript from "@/cadence/scripts/standard/get-balance.cdc?raw";
 
 /**
  * Get the FLOW balance for a Flow address

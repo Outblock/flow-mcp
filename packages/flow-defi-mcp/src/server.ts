@@ -1,11 +1,10 @@
 import { FastMCP } from "fastmcp";
 import { createTools } from "./tools";
-import { createPrompts } from "./prompts";
 
 export function createServer() {
   // Initialize server
   const server = new FastMCP({
-    name: "flow-mcp",
+    name: "flow-defi-mcp",
     version: "0.1.11",
   });
 
@@ -27,20 +26,6 @@ export function createServer() {
           console.error("Error in tool execution:", err);
           return "Internal server error in tool execution.";
         }
-      },
-    });
-  }
-
-  // Register all prompts
-  const prompts = createPrompts();
-  for (const prompt of prompts) {
-    server.addPrompt({
-      name: prompt.name,
-      description: prompt.description,
-      arguments: prompt.arguments,
-      load: async (args) => {
-        const result = await prompt.handler(args);
-        return result.messages[0].content.text;
       },
     });
   }
