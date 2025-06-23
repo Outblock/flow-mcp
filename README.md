@@ -1,6 +1,6 @@
 # Flow MCP Monorepo
 
-This monorepo contains a collection of Modular Command-line Processors (MCPs) for interacting with the Flow blockchain and its EVM environment.
+This monorepo contains a collection of Model Context Protocol (MCPs) for interacting with the Flow blockchain and FLOW-EVM environment.
 
 ## Packages
 
